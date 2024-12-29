@@ -3,3 +3,6 @@
 # コンパイル済ファイル
 *.pyc
 *.pyo
+
+# mysql_data
+**/mysql_data

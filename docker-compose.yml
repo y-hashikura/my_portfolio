@@ -1,0 +1,39 @@
+version: '3' 
+services:
+  react-app:
+    container_name: my_portfolio_front
+    build:
+      context: ./frontend
+      dockerfile: docker/Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    stdin_open: true
+    tty: true
+    depends_on:
+      - django-app
+  django-app:
+    container_name: my_portfolio_back
+    build:
+      context: ./backend 
+      dockerfile: docker/Dockerfile 
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app 
+    depends_on:
+      - mysql_app
+  mysql_app:
+    image: mysql:8.0
+    container_name: my_portfolio_db
+    environment:
+      MYSQL_ROOT_PASSWORD: p@ssw0rd
+      MYSQL_DATABASE: my_portfolio_database
+      MYSQL_USER: local_user
+      MYSQL_PASSWORD: local_p@ssw0rd
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql_data:/var/lib/mysql
